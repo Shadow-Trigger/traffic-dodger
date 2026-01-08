@@ -1,7 +1,7 @@
 export class Enemy {
-  constructor(laneX, speed) {
-    this.x = laneX;
-    this.y = -50;
+  constructor(x, speed, startY = -50) {
+    this.x = x;
+    this.y = startY;   // starting Y position configurable
     this.size = 40;
     this.speed = speed;
   }
@@ -31,4 +31,3 @@ export class Enemy {
     );
   }
 }
-
