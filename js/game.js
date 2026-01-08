@@ -14,6 +14,25 @@ export class Game {
 
     this.enemies = [];
     this.lastTime = 0;
+
+    drawLaneDividers() {
+  const laneWidth = this.width / this.lanes.count;
+
+  this.ctx.strokeStyle = "#555";
+  this.ctx.setLineDash([20, 20]);
+  this.ctx.lineWidth = 2;
+
+  for (let i = 1; i < this.lanes.count; i++) {
+    const x = i * laneWidth;
+    this.ctx.beginPath();
+    this.ctx.moveTo(x, 0);
+    this.ctx.lineTo(x, this.height);
+    this.ctx.stroke();
+  }
+
+  this.ctx.setLineDash([]);
+}
+
   }
 
   start() {
