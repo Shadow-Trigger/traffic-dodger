@@ -14,25 +14,7 @@ export class Game {
 
     this.enemies = [];
     this.lastTime = 0;
-
-    drawLaneDividers() {
-  const laneWidth = this.width / this.lanes.count;
-
-  this.ctx.strokeStyle = "#555";
-  this.ctx.setLineDash([20, 20]);
-  this.ctx.lineWidth = 2;
-
-  for (let i = 1; i < this.lanes.count; i++) {
-    const x = i * laneWidth;
-    this.ctx.beginPath();
-    this.ctx.moveTo(x, 0);
-    this.ctx.lineTo(x, this.height);
-    this.ctx.stroke();
-  }
-
-  this.ctx.setLineDash([]);
-}
-
+    this.gameOver = false;
   }
 
   start() {
@@ -40,6 +22,8 @@ export class Game {
   }
 
   loop(timestamp) {
+    if (this.gameOver) return;
+
     const delta = timestamp - this.lastTime;
     this.lastTime = timestamp;
 
@@ -53,23 +37,47 @@ export class Game {
     this.player.update();
     this.spawner.update(delta, this.enemies);
 
-    this.enemies.forEach(e => e.update(delta));
-    this.enemies = this.enemies.filter(e => !e.offScreen(this.height));
+    this.enemies.forEach(enemy => enemy.update(delta));
+    this.enemies = this.enemies.filter(
+      enemy => !enemy.offScreen(this.height)
+    );
 
-    // Collision check
-    this.enemies.forEach(enemy => {
+    // Collision detection
+    for (const enemy of this.enemies) {
       if (enemy.collidesWith(this.player)) {
+        this.gameOver = true;
         alert("Game Over!");
         window.location.reload();
+        break;
       }
-    });
+    }
   }
 
   render() {
     this.ctx.clearRect(0, 0, this.width, this.height);
 
+    this.drawLaneDividers();
+
     this.player.render(this.ctx);
-    this.enemies.forEach(e => e.render(this.ctx));
+    this.enemies.forEach(enemy => enemy.render(this.ctx));
+  }
+
+  drawLaneDividers() {
+    const laneWidth = this.width / this.lanes.count;
+
+    this.ctx.strokeStyle = "#555";
+    this.ctx.setLineDash([20, 20]);
+    this.ctx.lineWidth = 2;
+
+    for (let i = 1; i < this.lanes.count; i++) {
+      const x = i * laneWidth;
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, 0);
+      this.ctx.lineTo(x, this.height);
+      this.ctx.stroke();
+    }
+
+    this.ctx.setLineDash([]);
   }
 }
-
