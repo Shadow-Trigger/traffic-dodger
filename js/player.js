@@ -1,31 +1,37 @@
 export class Player {
   constructor(lanes, canvasHeight) {
     this.lanes = lanes;
+
     this.laneIndex = 2;
     this.x = this.lanes.getLaneX(this.laneIndex);
     this.targetX = this.x;
-    this.moveSpeed = 0.6; // tweak this for difficulty
+
+    this.moveSpeed = 0.6;
     this.size = 40;
     this.y = canvasHeight - 80;
 
     window.addEventListener("keydown", e => {
-  if (e.key === "ArrowLeft" && this.laneIndex > 0) {
-    this.laneIndex--;
-    this.targetX = this.lanes.getLaneX(this.laneIndex);
-  }
+      if (e.key === "ArrowLeft" && this.laneIndex > 0) {
+        this.laneIndex--;
+        this.targetX = this.lanes.getLaneX(this.laneIndex);
+      }
 
-  if (e.key === "ArrowRight" && this.laneIndex < this.lanes.count - 1) {
-    this.laneIndex++;
-    this.targetX = this.lanes.getLaneX(this.laneIndex);
-  }
-});
-    
+      if (e.key === "ArrowRight" && this.laneIndex < this.lanes.count - 1) {
+        this.laneIndex++;
+        this.targetX = this.lanes.getLaneX(this.laneIndex);
+      }
+    });
   }
 
   update() {
-  const dx = this.targetX - this.x;
-  this.x += dx * this.moveSpeed;
-}
+    const dx = this.targetX - this.x;
+    this.x += dx * this.moveSpeed;
+
+    // snap when very close (prevents jitter)
+    if (Math.abs(dx) < 0.1) {
+      this.x = this.targetX;
+    }
+  }
 
   render(ctx) {
     ctx.fillStyle = "green";
@@ -37,4 +43,3 @@ export class Player {
     );
   }
 }
-
