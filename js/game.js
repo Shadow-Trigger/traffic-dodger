@@ -1,6 +1,8 @@
 import { Player } from "./player.js";
 import { LaneManager } from "./lane.js";
 import { Spawner } from "./spawner.js";
+import { Difficulty } from "./difficulty.js";
+import { Score } from "./score.js";
 
 export class Game {
   constructor(ctx, width, height) {
@@ -10,13 +12,16 @@ export class Game {
 
     this.lanes = new LaneManager(5, width);
     this.player = new Player(this.lanes, height);
-    this.spawner = new Spawner(this.lanes);
+
+    this.difficulty = new Difficulty();
+    this.score = new Score();
+
+    this.spawner = new Spawner(this.lanes, this.difficulty);
 
     this.enemies = [];
     this.lastTime = 0;
     this.gameOver = false;
 
-    // 👇 lane line animation
     this.laneDashOffset = 0;
     this.laneScrollSpeed = 0.25;
   }
@@ -39,6 +44,9 @@ export class Game {
 
   update(delta) {
     this.player.update();
+    this.difficulty.update(delta);
+    this.score.update(delta);
+
     this.spawner.update(delta, this.enemies);
 
     this.enemies.forEach(enemy => enemy.update(delta));
@@ -46,13 +54,15 @@ export class Game {
       enemy => !enemy.offScreen(this.height)
     );
 
-    // Animate lane lines
-    this.laneDashOffset += this.laneScrollSpeed * delta;
+    this.laneDashOffset +=
+      this.laneScrollSpeed *
+      this.difficulty.speedMultiplier *
+      delta;
 
     for (const enemy of this.enemies) {
       if (enemy.collidesWith(this.player)) {
         this.gameOver = true;
-        alert("Game Over!");
+        alert(`Game Over!\nScore: ${Math.floor(this.score.value)}`);
         window.location.reload();
         break;
       }
@@ -63,9 +73,9 @@ export class Game {
     this.ctx.clearRect(0, 0, this.width, this.height);
 
     this.drawLaneDividers();
-
     this.player.render(this.ctx);
-    this.enemies.forEach(enemy => enemy.render(this.ctx));
+    this.enemies.forEach(e => e.render(this.ctx));
+    this.score.render(this.ctx);
   }
 
   drawLaneDividers() {
@@ -73,10 +83,7 @@ export class Game {
 
     this.ctx.strokeStyle = "#555";
     this.ctx.setLineDash([30, 30]);
-
-    // 👇 this makes the dashes move
     this.ctx.lineDashOffset = -this.laneDashOffset;
-
     this.ctx.lineWidth = 2;
 
     for (let i = 1; i < this.lanes.count; i++) {
@@ -87,7 +94,6 @@ export class Game {
       this.ctx.stroke();
     }
 
-    // reset so it doesn't affect other drawings
     this.ctx.setLineDash([]);
     this.ctx.lineDashOffset = 0;
   }
