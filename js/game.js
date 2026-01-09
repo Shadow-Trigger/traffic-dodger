@@ -15,6 +15,10 @@ export class Game {
     this.enemies = [];
     this.lastTime = 0;
     this.gameOver = false;
+
+    // 👇 lane line animation
+    this.laneDashOffset = 0;
+    this.laneScrollSpeed = 0.25;
   }
 
   start() {
@@ -42,6 +46,9 @@ export class Game {
       enemy => !enemy.offScreen(this.height)
     );
 
+    // Animate lane lines
+    this.laneDashOffset += this.laneScrollSpeed * delta;
+
     for (const enemy of this.enemies) {
       if (enemy.collidesWith(this.player)) {
         this.gameOver = true;
@@ -55,13 +62,9 @@ export class Game {
   render() {
     this.ctx.clearRect(0, 0, this.width, this.height);
 
-    // Draw dashed lane dividers
     this.drawLaneDividers();
 
-    // Draw player
     this.player.render(this.ctx);
-
-    // Draw enemies
     this.enemies.forEach(enemy => enemy.render(this.ctx));
   }
 
@@ -69,7 +72,11 @@ export class Game {
     const laneWidth = this.width / this.lanes.count;
 
     this.ctx.strokeStyle = "#555";
-    this.ctx.setLineDash([20, 20]);
+    this.ctx.setLineDash([30, 30]);
+
+    // 👇 this makes the dashes move
+    this.ctx.lineDashOffset = -this.laneDashOffset;
+
     this.ctx.lineWidth = 2;
 
     for (let i = 1; i < this.lanes.count; i++) {
@@ -80,6 +87,8 @@ export class Game {
       this.ctx.stroke();
     }
 
+    // reset so it doesn't affect other drawings
     this.ctx.setLineDash([]);
+    this.ctx.lineDashOffset = 0;
   }
 }
