@@ -1,51 +1,49 @@
 import { Enemy } from "./enemy.js";
 
 export class Spawner {
-  constructor(lanes) {
+  constructor(lanes, difficulty) {
     this.lanes = lanes;
+    this.difficulty = difficulty;
     this.timer = 0;
-    this.spawnRate = 1000; // time between waves in ms
+    this.baseSpawnRate = 1000;
   }
 
   update(delta, enemies) {
     this.timer += delta;
 
-    if (this.timer >= this.spawnRate) {
+    const spawnRate =
+      this.baseSpawnRate * this.difficulty.spawnMultiplier;
+
+    if (this.timer >= spawnRate) {
       this.timer = 0;
 
-      const waveSize = this.getEnemyCount(); // 1–4 enemies per wave
+      const waveSize = this.getEnemyCount();
+      const lanes = [...Array(this.lanes.count).keys()];
 
-      // Make an array of lane indices
-      const availableLanes = [...Array(this.lanes.count).keys()];
-
-      // Shuffle lanes so enemies pick random lanes without overlapping
-      for (let i = availableLanes.length - 1; i > 0; i--) {
+      for (let i = lanes.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [availableLanes[i], availableLanes[j]] =
-          [availableLanes[j], availableLanes[i]];
+        [lanes[i], lanes[j]] = [lanes[j], lanes[i]];
       }
 
-      // Spawn all enemies in the wave at the same Y position
       const startY = -60;
 
       for (let i = 0; i < waveSize; i++) {
-        const laneIndex = availableLanes[i];
-        const speed = 0.25 + Math.random() * 0.15;
+        const speed =
+          (0.25 + Math.random() * 0.15) *
+          this.difficulty.speedMultiplier;
 
         enemies.push(
-          new Enemy(this.lanes.getLaneX(laneIndex), speed, startY)
+          new Enemy(this.lanes.getLaneX(lanes[i]), speed, startY)
         );
       }
     }
   }
 
-  // Weighted 1–4 enemies per wave
   getEnemyCount() {
     const roll = Math.random();
-    if (roll < 0.30) return 1; // 30%
-    if (roll < 0.60) return 2; // 30%
-    if (roll < 0.90) return 3; // 30%
-    return 4;                  // 10%
+    if (roll < 0.30) return 1;
+    if (roll < 0.60) return 2;
+    if (roll < 0.90) return 3;
+    return 4;
   }
 }
-
