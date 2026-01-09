@@ -27,8 +27,6 @@ export class Player {
   this.x += dx * this.moveSpeed;
 }
 
-  update() {}
-
   render(ctx) {
     ctx.fillStyle = "green";
     ctx.fillRect(
