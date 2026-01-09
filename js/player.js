@@ -22,9 +22,10 @@ export class Player {
     
   }
 
-  get x() {
-    return this.lanes.getLaneX(this.laneIndex);
-  }
+  update() {
+  const dx = this.targetX - this.x;
+  this.x += dx * this.moveSpeed;
+}
 
   update() {}
 
