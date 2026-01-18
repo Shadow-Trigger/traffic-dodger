@@ -47,7 +47,7 @@ export class Game {
     this.difficulty.update(delta);
     this.score.update(delta);
 
-    this.spawner.update(delta, this.enemies);
+    this.spawner.update(delta, this.enemies, this.score.value);
 
     this.enemies.forEach(enemy => enemy.update(delta));
     this.enemies = this.enemies.filter(
