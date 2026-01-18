@@ -18,7 +18,7 @@ export class Spawner {
       this.timer = 0;
 
       const waveSize = this.getWaveSize(score);
-      alert(`Wave size!\n: ${waveSize}`);
+      // alert(`Wave size!\n: ${waveSize}`);
       console.log("Wave size:", waveSize); 
       const lanes = [...Array(this.lanes.count).keys()];
 
