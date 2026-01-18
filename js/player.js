@@ -2,22 +2,28 @@ export class Player {
   constructor(lanes, canvasHeight) {
     this.lanes = lanes;
 
+    // Sliding lane logic
     this.laneIndex = 2;
     this.x = this.lanes.getLaneX(this.laneIndex);
     this.targetX = this.x;
-
     this.moveSpeed = 0.6;
 
-    // scaled size for the PNG
-    this.width = 50;   // scaled from 216
-    this.height = 106; // scaled from 456
-    this.y = canvasHeight - this.height - 10; // leave a bit of bottom margin
+    // Player sprite size (scaled from 216x456)
+    this.width = 50;
+    this.height = 106;
+    this.y = canvasHeight - this.height - 10; // small bottom margin
 
-    // load the player sprite
+    // Load the sprite
     this.sprite = new Image();
-    this.sprite.src = "assets/player.png"; // put your PNG in assets/
+    this.sprite.src = "assets/player.png";
+    this.spriteLoaded = false;
 
-    // keyboard input
+    // Mark sprite as loaded
+    this.sprite.onload = () => {
+      this.spriteLoaded = true;
+    };
+
+    // Keyboard input for lane movement
     window.addEventListener("keydown", e => {
       if (e.key === "ArrowLeft" && this.laneIndex > 0) {
         this.laneIndex--;
@@ -41,7 +47,7 @@ export class Player {
   }
 
   render(ctx) {
-    if (this.sprite.complete) {
+    if (this.spriteLoaded) {
       ctx.drawImage(
         this.sprite,
         this.x - this.width / 2,
@@ -50,7 +56,7 @@ export class Player {
         this.height
       );
     } else {
-      // fallback green rectangle if sprite hasn't loaded yet
+      // fallback green square
       ctx.fillStyle = "green";
       ctx.fillRect(
         this.x - this.width / 2,
@@ -60,5 +66,14 @@ export class Player {
       );
     }
   }
-}
 
+  // Optional: helper for collisions with enemies
+  getBounds() {
+    return {
+      left: this.x - this.width / 2,
+      right: this.x + this.width / 2,
+      top: this.y - this.height / 2,
+      bottom: this.y + this.height / 2,
+    };
+  }
+}
