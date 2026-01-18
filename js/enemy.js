@@ -15,11 +15,14 @@ export class Enemy {
   }
 
   collidesWith(player) {
-    return (
-      Math.abs(this.x - player.x) < this.size &&
-      Math.abs(this.y - player.y) < this.size
-    );
-  }
+  return !(
+    this.x + this.size/2 < player.x - player.width/2 ||
+    this.x - this.size/2 > player.x + player.width/2 ||
+    this.y + this.size/2 < player.y - player.height/2 ||
+    this.y - this.size/2 > player.y + player.height/2
+  );
+}
+
 
   render(ctx) {
     ctx.fillStyle = "red";
