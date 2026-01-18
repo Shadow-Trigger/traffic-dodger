@@ -9,8 +9,8 @@ export class Player {
     this.moveSpeed = 0.6;
 
     // Player sprite size (scaled from 216x456)
-    this.width = 50;
-    this.height = 106;
+    this.width = 25;
+    this.height = 58;
     this.y = canvasHeight - this.height - 10; // small bottom margin
 
     // Load the sprite
