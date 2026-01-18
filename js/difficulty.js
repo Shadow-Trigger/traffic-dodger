@@ -9,14 +9,14 @@ export class Difficulty {
 
   // Multiplier that slowly increases
   get speedMultiplier() {
-    // return 1 + this.time / 30000; // ~every 30s
+    return 1 + this.time / 30000; // ~every 30s
     
-    let radians = this.time / 1000 * (Math.PI / 180);
+    // let radians = this.time / 1000 * (Math.PI / 180);
     
-    // Calculate sine
-    let sineValue = Math.sin(radians);
+    // // Calculate sine
+    // let sineValue = Math.sin(radians);
 
-    return Math.max(1, 1 + 10 * sineValue)
+    // return Math.max(1, 1 + 10 * sineValue)
   }
 
   get spawnMultiplier() {
