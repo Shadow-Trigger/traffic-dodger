@@ -15,13 +15,15 @@ export class Enemy {
   }
 
   collidesWith(player) {
+  const p = player.getBounds();
   return !(
-    this.x + this.size/2 < player.x - player.width/2 ||
-    this.x - this.size/2 > player.x + player.width/2 ||
-    this.y + this.size/2 < player.y - player.height/2 ||
-    this.y - this.size/2 > player.y + player.height/2
+    this.x + this.size / 2 < p.left ||
+    this.x - this.size / 2 > p.right ||
+    this.y + this.size / 2 < p.top ||
+    this.y - this.size / 2 > p.bottom
   );
 }
+
 
 
   render(ctx) {
