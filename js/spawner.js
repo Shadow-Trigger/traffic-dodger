@@ -42,6 +42,9 @@ export class Spawner {
   }
 
   getWaveSize(score) {
+    // 6 cars only after 300 score
+    if (score >= 300) return 6;
+
     const roll = Math.random();
   
     if (roll < 0.30) return 1;      // 30%
@@ -50,10 +53,7 @@ export class Spawner {
     if (roll < 0.85) return 1;      // 13%
     if (roll < 0.95) return 1;      // 10%
   
-    // 6 cars only after 300 score
-    if (score >= 300) return 6;
-  
-    return 1; // fallback before 300
+    return 6; // fallback before 300
   }
 
 }
