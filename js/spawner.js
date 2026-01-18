@@ -18,7 +18,6 @@ export class Spawner {
       this.timer = 0;
 
       const waveSize = this.getWaveSize(score);
-      // alert(`Wave size!\n: ${waveSize}`);
       console.log("Wave size:", waveSize); 
       const lanes = [...Array(this.lanes.count).keys()];
 
@@ -42,18 +41,20 @@ export class Spawner {
   }
 
   getWaveSize(score) {
-    // 6 cars only after 300 score
-    if (score >= 300) return 6;
 
     const roll = Math.random();
-  
-    if (roll < 0.30) return 1;      // 30%
-    if (roll < 0.55) return 1;      // 25%
-    if (roll < 0.72) return 1;      // 17%
-    if (roll < 0.85) return 1;      // 13%
-    if (roll < 0.95) return 1;      // 10%
-  
-    return 6; // fallback before 300
+
+    let proposed = 0
+   
+    if (roll < 0.30) proposed = 1;       // 30%
+    else if (roll < 0.55) proposed = 2;  // 25%
+    else if (roll < 0.72) proposed = 3;  // 17%
+    else if (roll < 0.85) proposed = 4;  // 13%
+    else if (roll < 0.95) proposed = 5;  // 10%
+    else proposed = 6;
+
+    // ensure a minimum of 3, when score is above 300
+    if (score > 300 && proposed < 3) proposed =3;
   }
 
 }
