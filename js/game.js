@@ -60,12 +60,12 @@ export class Game {
       delta;
 
     for (const enemy of this.enemies) {
-      if (enemy.collidesWith(this.player)) {
-        this.gameOver = true;
-        alert(`Game Over!\nScore: ${Math.floor(this.score.value)}`);
-        window.location.reload();
-        break;
-      }
+      // if (enemy.collidesWith(this.player)) {
+      //   this.gameOver = true;
+      //   alert(`Game Over!\nScore: ${Math.floor(this.score.value)}`);
+      //   window.location.reload();
+      //   break;
+      // }
     }
   }
 
