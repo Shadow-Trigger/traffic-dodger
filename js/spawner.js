@@ -54,7 +54,9 @@ export class Spawner {
     else proposed = 6;
 
     // ensure a minimum of 3, when score is above 300
-    if (score > 300 && proposed < 3) proposed =3;
+    if (score > 300 && proposed < 3) proposed = 3;
+
+    return proposed;
   }
 
 }
