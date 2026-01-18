@@ -3,7 +3,7 @@ export class Player {
     this.lanes = lanes;
 
     // Sliding lane logic
-    this.laneIndex = 2;
+    this.laneIndex = 3;
     this.x = this.lanes.getLaneX(this.laneIndex);
     this.targetX = this.x;
     this.moveSpeed = 0.6;
