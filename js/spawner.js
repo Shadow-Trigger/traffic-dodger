@@ -43,15 +43,15 @@ export class Spawner {
     const roll = Math.random();
   
     if (roll < 0.30) return 1;      // 30%
-    if (roll < 0.55) return 2;      // 25%
-    if (roll < 0.72) return 3;      // 17%
-    if (roll < 0.85) return 4;      // 13%
-    if (roll < 0.95) return 5;      // 10%
+    if (roll < 0.55) return 1;      // 25%
+    if (roll < 0.72) return 1;      // 17%
+    if (roll < 0.85) return 1;      // 13%
+    if (roll < 0.95) return 1;      // 10%
   
     // 6 cars only after 300 score
     if (score >= 300) return 6;
   
-    return 5; // fallback before 300
+    return 1; // fallback before 300
   }
 
 }
