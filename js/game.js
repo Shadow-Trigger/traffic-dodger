@@ -10,7 +10,7 @@ export class Game {
     this.width = width;
     this.height = height;
 
-    this.lanes = new LaneManager(5, width);
+    this.lanes = new LaneManager(7, width);
     this.player = new Player(this.lanes, height);
 
     this.difficulty = new Difficulty();
