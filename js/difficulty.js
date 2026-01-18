@@ -16,7 +16,7 @@ export class Difficulty {
     // Calculate sine
     let sineValue = Math.sin(radians);
 
-    return Math.Max(1, 1 + 10 * sineValue)
+    return Math.max(1, 1 + 10 * sineValue)
   }
 
   get spawnMultiplier() {
