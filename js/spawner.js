@@ -8,7 +8,7 @@ export class Spawner {
     this.baseSpawnRate = 1000;
   }
 
-  update(delta, enemies) {
+  update(delta, enemies, score) {
     this.timer += delta;
 
     const spawnRate =
@@ -17,7 +17,7 @@ export class Spawner {
     if (this.timer >= spawnRate) {
       this.timer = 0;
 
-      const waveSize = this.getEnemyCount();
+      const waveSize = this.getWaveSize(score);
       const lanes = [...Array(this.lanes.count).keys()];
 
       for (let i = lanes.length - 1; i > 0; i--) {
