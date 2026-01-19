@@ -21,34 +21,35 @@ export class Menu {
     this.menuDiv.style.position = "absolute";
     this.menuDiv.style.top = "0";
     this.menuDiv.style.left = "0";
-    this.menuDiv.style.backgroundColor = "#222"; // dark background
+    this.menuDiv.style.backgroundColor = "rgba(0,0,0,0.7)";
     this.menuDiv.style.color = "#fff";
     this.menuDiv.style.fontFamily = "Arial, sans-serif";
+    this.menuDiv.style.zIndex = "10";
 
     // Title
     const title = document.createElement("h1");
     title.textContent = "Pixel Racer";
     title.style.marginBottom = "30px";
+    title.style.fontSize = "48px";
     this.menuDiv.appendChild(title);
 
     // Play button
     this.playButton = document.createElement("button");
     this.playButton.textContent = "Play";
-    this.playButton.style.padding = "10px 20px";
-    this.playButton.style.fontSize = "18px";
+    this.playButton.style.padding = "12px 24px";
+    this.playButton.style.fontSize = "20px";
     this.playButton.style.cursor = "pointer";
     this.menuDiv.appendChild(this.playButton);
 
-    // TODO: skin selector placeholder
+    // Skin placeholder
     const skinPlaceholder = document.createElement("div");
     skinPlaceholder.textContent = "Skin selector (coming soon)";
     skinPlaceholder.style.marginTop = "20px";
     this.menuDiv.appendChild(skinPlaceholder);
 
-    // Add to container
     this.container.appendChild(this.menuDiv);
 
-    // Add button listener
+    // Play button callback
     this.playButton.addEventListener("click", () => {
       this.hide();
       this.onStartGame();
