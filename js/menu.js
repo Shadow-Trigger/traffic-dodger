@@ -10,7 +10,7 @@ export class Menu {
     this.skins = [
       "assets/player.png",
       "assets/player2.png",
-      // Add more skins here later
+      // Add more skins later
     ];
     this.currentSkinIndex = 0;
 
@@ -77,11 +77,11 @@ export class Menu {
       cursor: "pointer",
     });
 
-    // Skin wrapper
+    // Skin wrapper (bigger box)
     this.skinWrapper = document.createElement("div");
     Object.assign(this.skinWrapper.style, {
-      width: "50px",
-      height: "75px",
+      width: "70px",       // increased by ~40%
+      height: "105px",     // increased by ~40%
       overflow: "hidden",
       position: "relative",
       display: "flex",
@@ -89,12 +89,12 @@ export class Menu {
       alignItems: "center",
     });
 
-    // Current skin image
+    // Current skin image (scaled down 15%)
     this.currentSkinImg = document.createElement("img");
     this.currentSkinImg.src = this.skins[this.currentSkinIndex];
     Object.assign(this.currentSkinImg.style, {
       position: "absolute",
-      width: "50px",
+      width: "42.5px",   // 50px * 0.85 = 42.5px
       height: "auto",
       transition: "transform 0.3s ease",
     });
@@ -142,7 +142,7 @@ export class Menu {
     this.nextSkinImg.src = this.skins[this.currentSkinIndex];
     Object.assign(this.nextSkinImg.style, {
       position: "absolute",
-      width: "50px",
+      width: "42.5px",  // scaled 15%
       height: "auto",
       transition: "transform 0.3s ease",
       transform: `translateX(${direction * 100}%)`,
@@ -155,7 +155,6 @@ export class Menu {
       this.currentSkinImg.style.transform = `translateX(${-direction * 100}%)`;
       this.nextSkinImg.style.transform = "translateX(0%)";
 
-      // After animation
       setTimeout(() => {
         this.skinWrapper.removeChild(this.currentSkinImg);
         this.currentSkinImg = this.nextSkinImg;
