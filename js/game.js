@@ -15,6 +15,8 @@ export class Game {
 
     this.lanes = new LaneManager(7, width);
 
+    this.gameStarting = false;
+    
     // this.enemies = [];
     // this.lastTime = 0;
     // this.gameOver = false;
@@ -41,15 +43,20 @@ export class Game {
     this.difficulty.time = 0;
     this.laneDashOffset = 0;
     this.gameOver = false;
-    this.lastTime = timestamp;
   }
 
   start() {
+    this.gameStarting = true;
     requestAnimationFrame(this.loop.bind(this));
   }
 
   loop(timestamp) {
     if (this.gameOver) return;
+
+    if (this.gameStarting) {
+      this.lastTime = timestamp;
+      this.gameStarting = false;
+    }
 
     const delta = timestamp - this.lastTime;
     this.lastTime = timestamp;
