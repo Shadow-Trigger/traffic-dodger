@@ -3,6 +3,7 @@ import { LaneManager } from "./lane.js";
 import { Spawner } from "./spawner.js";
 import { Difficulty } from "./difficulty.js";
 import { Score } from "./score.js";
+import { Menu } from "./menu.js";
 
 export class Game {
   constructor(ctx, width, height) {
@@ -24,6 +25,28 @@ export class Game {
 
     this.laneDashOffset = 0;
     this.laneScrollSpeed = 0.25;
+
+    // -----------------------------
+    // Menu system
+    // -----------------------------
+    this.menu = new Menu(ctx.canvas.parentElement.id, () => this.startFromMenu());
+    this.menu.show();
+  }
+
+  startFromMenu() {
+    this.reset();
+    this.gameOver = false;
+    this.menu.hide();
+    this.start();
+  }
+
+  reset() {
+    this.player = new Player(this.lanes, this.height);
+    this.spawner = new Spawner(this.lanes, this.difficulty);
+    this.enemies = [];
+    this.score.reset();
+    this.difficulty.time = 0;
+    this.laneDashOffset = 0;
   }
 
   start() {
@@ -43,6 +66,8 @@ export class Game {
   }
 
   update(delta) {
+    if (this.gameOver) return;
+
     this.player.update();
     this.difficulty.update(delta);
     this.score.update(delta);
@@ -50,22 +75,17 @@ export class Game {
     this.spawner.update(delta, this.enemies, this.score.value);
 
     this.enemies.forEach(enemy => enemy.update(delta));
-    this.enemies = this.enemies.filter(
-      enemy => !enemy.offScreen(this.height)
-    );
+    this.enemies = this.enemies.filter(enemy => !enemy.offScreen(this.height));
 
-    this.laneDashOffset +=
-      this.laneScrollSpeed *
-      this.difficulty.speedMultiplier *
-      delta;
+    this.laneDashOffset += this.laneScrollSpeed * this.difficulty.speedMultiplier * delta;
 
+    // Collision
     for (const enemy of this.enemies) {
-      // if (enemy.collidesWith(this.player)) {
-      //   this.gameOver = true;
-      //   alert(`Game Over!\nScore: ${Math.floor(this.score.value)}`);
-      //   window.location.reload();
-      //   break;
-      // }
+      if (enemy.collidesWith(this.player)) {
+        this.gameOver = true;
+        this.menu.show();
+        break;
+      }
     }
   }
 
