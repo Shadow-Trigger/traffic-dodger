@@ -12,7 +12,6 @@ export class Game {
     this.height = height;
 
     this.lanes = new LaneManager(7, width);
-    this.player = new Player(this.lanes, height);
 
     this.difficulty = new Difficulty();
     this.score = new Score();
@@ -29,29 +28,19 @@ export class Game {
     // -----------------------------
     // Menu system
     // -----------------------------
-    this.menu = new Menu(ctx.canvas.parentElement.id, () => this.startFromMenu());
+    this.menu = new Menu(ctx.canvas.parentElement.id, (selectedSkin) => this.startFromMenu(selectedSkin));
     this.menu.show();
   }
 
   startFromMenu(selectedSkin) {
-  this.reset(selectedSkin);
-  this.gameOver = false;
-  this.menu.hide();
-  this.start();
-}
+    this.reset(selectedSkin);
+    this.gameOver = false;
+    this.menu.hide();
+    this.start();
+  }
 
-reset(selectedSkin) {
-  this.player = new Player(this.lanes, this.height, selectedSkin);
-  this.spawner = new Spawner(this.lanes, this.difficulty);
-  this.enemies = [];
-  this.score.reset();
-  this.difficulty.time = 0;
-  this.laneDashOffset = 0;
-}
-
-
-  reset() {
-    this.player = new Player(this.lanes, this.height);
+  reset(selectedSkin) {
+    this.player = new Player(this.lanes, this.height, selectedSkin);
     this.spawner = new Spawner(this.lanes, this.difficulty);
     this.enemies = [];
     this.score.reset();
