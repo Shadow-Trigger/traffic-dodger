@@ -33,12 +33,22 @@ export class Game {
     this.menu.show();
   }
 
-  startFromMenu() {
-    this.reset();
-    this.gameOver = false;
-    this.menu.hide();
-    this.start();
-  }
+  startFromMenu(selectedSkin) {
+  this.reset(selectedSkin);
+  this.gameOver = false;
+  this.menu.hide();
+  this.start();
+}
+
+reset(selectedSkin) {
+  this.player = new Player(this.lanes, this.height, selectedSkin);
+  this.spawner = new Spawner(this.lanes, this.difficulty);
+  this.enemies = [];
+  this.score.reset();
+  this.difficulty.time = 0;
+  this.laneDashOffset = 0;
+}
+
 
   reset() {
     this.player = new Player(this.lanes, this.height);
