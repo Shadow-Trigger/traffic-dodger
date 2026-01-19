@@ -10,20 +10,14 @@ export class Game {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
+    this.laneDashOffset = 0;
+    this.laneScrollSpeed = 0.25;
 
     this.lanes = new LaneManager(7, width);
 
-    this.difficulty = new Difficulty();
-    this.score = new Score();
-
-    this.spawner = new Spawner(this.lanes, this.difficulty);
-
-    this.enemies = [];
-    this.lastTime = 0;
-    this.gameOver = false;
-
-    this.laneDashOffset = 0;
-    this.laneScrollSpeed = 0.25;
+    // this.enemies = [];
+    // this.lastTime = 0;
+    // this.gameOver = false;
 
     // -----------------------------
     // Menu system
@@ -34,18 +28,20 @@ export class Game {
 
   startFromMenu(selectedSkin) {
     this.reset(selectedSkin);
-    this.gameOver = false;
     this.menu.hide();
     this.start();
   }
 
   reset(selectedSkin) {
+    this.difficulty = new Difficulty();
+    this.score = new Score();
     this.player = new Player(this.lanes, this.height, selectedSkin);
     this.spawner = new Spawner(this.lanes, this.difficulty);
     this.enemies = [];
-    this.score.reset();
     this.difficulty.time = 0;
     this.laneDashOffset = 0;
+    this.gameOver = false;
+    this.lastTime = timestamp;
   }
 
   start() {
