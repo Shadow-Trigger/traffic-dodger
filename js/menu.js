@@ -10,6 +10,9 @@ export class Menu {
     this.skins = [
       "assets/player.png",
       "assets/player2.png",
+      "assets/player3.png",
+      "assets/player4.png",
+      "assets/player5.png"
       // Add more skins later
     ];
     this.currentSkinIndex = 0;
