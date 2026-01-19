@@ -1,5 +1,5 @@
 export class Player {
-  constructor(lanes, canvasHeight) {
+  constructor(lanes, canvasHeight, skinPath) {
     this.lanes = lanes;
 
     // Sliding lane logic
@@ -8,17 +8,15 @@ export class Player {
     this.targetX = this.x;
     this.moveSpeed = 0.6;
 
-    // Player sprite size (scaled from 216x456)
+    // Player sprite size (scaled from your original)
     this.width = 50 * 0.75;
     this.height = 106 * 0.75;
     this.y = canvasHeight - this.height - 10; // small bottom margin
 
     // Load the sprite
     this.sprite = new Image();
-    this.sprite.src = "assets/player.png";
+    this.sprite.src = skinPath || "assets/player.png"; // default skin
     this.spriteLoaded = false;
-
-    // Mark sprite as loaded
     this.sprite.onload = () => {
       this.spriteLoaded = true;
     };
@@ -67,7 +65,7 @@ export class Player {
     }
   }
 
-  // Optional: helper for collisions with enemies
+  // Optional helper for collisions
   getBounds() {
     return {
       left: this.x - this.width / 2,
