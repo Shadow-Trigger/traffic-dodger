@@ -13,7 +13,7 @@ export class Menu {
       "assets/player3.png",
       "assets/player4.png",
       "assets/player5.png"
-      // Add more skins later
+      // Add more skins here later
     ];
     this.currentSkinIndex = 0;
 
@@ -41,16 +41,18 @@ export class Menu {
       left: "0",
       backgroundColor: "rgba(0,0,0,0.7)",
       color: "#fff",
-      fontFamily: "Arial, sans-serif",
+      fontFamily: "'Press Start 2P', monospace",
       zIndex: "10",
     });
 
     // Title
     const title = document.createElement("h1");
-    title.textContent = "Pixel Racer";
+    title.textContent = "PIXEL RACER";
     Object.assign(title.style, {
       marginBottom: "30px",
-      fontSize: "48px",
+      fontSize: "36px",
+      textAlign: "center",
+      letterSpacing: "2px"
     });
     this.menuDiv.appendChild(title);
 
@@ -69,6 +71,7 @@ export class Menu {
       marginRight: "20px",
       fontSize: "24px",
       cursor: "pointer",
+      fontFamily: "'Press Start 2P', monospace"
     });
 
     // Right arrow
@@ -78,13 +81,14 @@ export class Menu {
       marginLeft: "20px",
       fontSize: "24px",
       cursor: "pointer",
+      fontFamily: "'Press Start 2P', monospace"
     });
 
     // Skin wrapper (bigger box)
     this.skinWrapper = document.createElement("div");
     Object.assign(this.skinWrapper.style, {
-      width: "70px",       // increased by ~40%
-      height: "105px",     // increased by ~40%
+      width: "70px",       // bigger box
+      height: "105px",
       overflow: "hidden",
       position: "relative",
       display: "flex",
@@ -97,7 +101,7 @@ export class Menu {
     this.currentSkinImg.src = this.skins[this.currentSkinIndex];
     Object.assign(this.currentSkinImg.style, {
       position: "absolute",
-      width: "42.5px",   // 50px * 0.85 = 42.5px
+      width: "42.5px",   // 50px * 0.85
       height: "auto",
       transition: "transform 0.3s ease",
     });
@@ -111,11 +115,12 @@ export class Menu {
 
     // Play button
     this.playButton = document.createElement("button");
-    this.playButton.textContent = "Play";
+    this.playButton.textContent = "PLAY";
     Object.assign(this.playButton.style, {
       padding: "12px 24px",
       fontSize: "20px",
       cursor: "pointer",
+      fontFamily: "'Press Start 2P', monospace"
     });
     this.menuDiv.appendChild(this.playButton);
 
@@ -133,26 +138,24 @@ export class Menu {
   }
 
   changeSkin(direction) {
-    if (this.animating) return; // prevent overlapping animations
+    if (this.animating) return;
 
     const oldIndex = this.currentSkinIndex;
     this.currentSkinIndex += direction;
     if (this.currentSkinIndex < 0) this.currentSkinIndex = this.skins.length - 1;
     if (this.currentSkinIndex >= this.skins.length) this.currentSkinIndex = 0;
 
-    // Create new image for sliding animation
     this.nextSkinImg = document.createElement("img");
     this.nextSkinImg.src = this.skins[this.currentSkinIndex];
     Object.assign(this.nextSkinImg.style, {
       position: "absolute",
-      width: "42.5px",  // scaled 15%
+      width: "42.5px", // scaled down
       height: "auto",
       transition: "transform 0.3s ease",
       transform: `translateX(${direction * 100}%)`,
     });
     this.skinWrapper.appendChild(this.nextSkinImg);
 
-    // Trigger sliding animation
     requestAnimationFrame(() => {
       this.animating = true;
       this.currentSkinImg.style.transform = `translateX(${-direction * 100}%)`;
