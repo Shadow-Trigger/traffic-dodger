@@ -58,7 +58,12 @@ export class Game {
   }
 
   loop(timestamp) {
-    if (this.gameOver) return;
+    if (this.gameOver) {
+      //render the last frame (eg, for explosion)
+      console.log("Game Over - rendering last frame");
+      this.render();
+      return;
+    }
 
     if (this.gameStarting) {
       this.lastTime = timestamp;
@@ -91,7 +96,7 @@ export class Game {
     // Collision
     for (const enemy of this.enemies) {
       if (enemy.collidesWith(this.player) && !this.gameOver) {
-        console.log("Collision - Game Over"); 
+        console.log("Collision - Game Over");
         this.gameOver = true;
 
         // Spawn explosion on top of player + everything else
@@ -133,7 +138,9 @@ export class Game {
     this.enemies.forEach(e => e.render(this.ctx));
 
     // Player explosion on top
+    console.log("Considering player explosion render...");
     if (this.playerExplosion) {
+      console.log("Rendering");
       this.playerExplosion.render(this.ctx);
     }
 
