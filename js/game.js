@@ -91,6 +91,7 @@ export class Game {
     // Collision
     for (const enemy of this.enemies) {
       if (enemy.collidesWith(this.player) && !this.gameOver) {
+        console.log("Collision - Game Over"); 
         this.gameOver = true;
 
         // Spawn explosion on top of player + everything else
