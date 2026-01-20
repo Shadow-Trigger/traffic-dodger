@@ -2,12 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Traffic Dodger</title>
+  <title>Pixel Racer</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Optional extra styles to center canvas in the page */
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #111;
+    }
+
+    #game-container {
+      position: relative;
+    }
+
+    canvas {
+      display: block;
+      background-color: #222;
+      border: 2px solid #555;
+    }
+  </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <div id="game-container">
+    <canvas id="game-canvas" width="400" height="600"></canvas>
+  </div>
 
-  <script type="module" src="js/main.js"></script>
+  <script type="module">
+    import { Game } from "./js/game.js";
+
+    const canvas = document.getElementById("game-canvas");
+    const game = new Game(canvas.getContext("2d"), canvas.width, canvas.height);
+  </script>
 </body>
 </html>
