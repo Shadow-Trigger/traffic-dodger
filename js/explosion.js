@@ -27,7 +27,12 @@ export class Explosion {
   }
 
   render(ctx) {
-    if (!this.loaded) return;
+    if (!this.loaded) 
+    {
+      console.log("Explosion ... not yet loaded");
+      return;
+    }
+    console.log("Explosion::render");
 
     ctx.drawImage(
       this.img,
