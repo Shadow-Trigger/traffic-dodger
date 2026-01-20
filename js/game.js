@@ -101,8 +101,8 @@ export class Game {
           this.player.height
         );
 
-        this.menu.show();
-        break;
+        // this.menu.show();
+        // break;
       }
     }
 
