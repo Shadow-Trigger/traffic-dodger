@@ -23,7 +23,7 @@ export class Game {
     this.menu.show();
 
     // Continuous background explosion (behind everything except menu)
-    this.backgroundExplosion = new Explosion(width / 2, height / 2, width, height);
+    // this.backgroundExplosion = new Explosion(width / 2, height / 2, width, height);
 
     // Player-specific explosion (spawned on crash)
     this.playerExplosion = null;
@@ -49,7 +49,7 @@ export class Game {
     this.playerExplosion = null;
 
     // Reset background explosion
-    this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
+    // this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
   }
 
   start() {
@@ -107,10 +107,10 @@ export class Game {
     }
 
     // Update explosions
-    this.backgroundExplosion.update(delta);
-    if (this.backgroundExplosion.done) {
-      this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
-    }
+    // this.backgroundExplosion.update(delta);
+    // if (this.backgroundExplosion.done) {
+    //   this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
+    // }
 
     if (this.playerExplosion) {
       this.playerExplosion.update(delta);
@@ -123,8 +123,8 @@ export class Game {
   render() {
     this.ctx.clearRect(0, 0, this.width, this.height);
 
-    // Background explosion behind everything
-    this.backgroundExplosion.render(this.ctx);
+    // // Background explosion behind everything
+    // this.backgroundExplosion.render(this.ctx);
 
     // Lanes, player, enemies
     this.drawLaneDividers();
