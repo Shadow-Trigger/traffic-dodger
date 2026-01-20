@@ -1,41 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Pixel Racer</title>
+
+  <!-- Pixel font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* Optional extra styles to center canvas in the page */
-    body {
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #111;
-    }
-
-    #game-container {
-      position: relative;
-    }
-
-    canvas {
-      display: block;
-      background-color: #222;
-      border: 2px solid #555;
-    }
-  </style>
 </head>
 <body>
-  <div id="game-container">
-    <canvas id="game-canvas" width="400" height="600"></canvas>
+
+  <!-- MENU -->
+  <div id="menu">
+    <h1>PIXEL RACER</h1>
+
+    <div id="skin-selector">
+      <button id="skin-left">◀</button>
+      <canvas id="skin-preview" width="120" height="180"></canvas>
+      <button id="skin-right">▶</button>
+    </div>
+
+    <button id="play-btn">PLAY</button>
   </div>
 
-  <script type="module">
-    import { Game } from "./js/game.js";
+  <!-- GAME -->
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
 
-    const canvas = document.getElementById("game-canvas");
-    const game = new Game(canvas.getContext("2d"), canvas.width, canvas.height);
-  </script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
