@@ -107,8 +107,8 @@ export class Game {
           this.player.height * 2
         );
 
-        // this.menu.show();
-        // break;
+        this.menu.show();
+        break;
       }
     }
 
@@ -118,12 +118,12 @@ export class Game {
     //   this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
     // }
 
-    if (this.playerExplosion) {
-      this.playerExplosion.update(delta);
-      if (this.playerExplosion.done) {
-        this.playerExplosion = null;
-      }
-    }
+    // if (this.playerExplosion) {
+    //   this.playerExplosion.update(delta);
+    //   if (this.playerExplosion.done) {
+    //     this.playerExplosion = null;
+    //   }
+    // }
   }
 
   render() {
