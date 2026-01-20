@@ -4,6 +4,7 @@ import { Spawner } from "./spawner.js";
 import { Difficulty } from "./difficulty.js";
 import { Score } from "./score.js";
 import { Menu } from "./menu.js";
+import { Explosion } from "./explosion.js";
 
 export class Game {
   constructor(ctx, width, height) {
@@ -16,16 +17,15 @@ export class Game {
     this.lanes = new LaneManager(7, width);
 
     this.gameStarting = false;
-    
-    // this.enemies = [];
-    // this.lastTime = 0;
-    // this.gameOver = false;
 
     // -----------------------------
     // Menu system
     // -----------------------------
     this.menu = new Menu(ctx.canvas.parentElement.id, (selectedSkin) => this.startFromMenu(selectedSkin));
     this.menu.show();
+
+    // Explosion for background (continuous)
+    this.backgroundExplosion = new Explosion(width / 2, height / 2, width, height);
   }
 
   startFromMenu(selectedSkin) {
@@ -83,20 +83,37 @@ export class Game {
 
     // Collision
     for (const enemy of this.enemies) {
-      if (enemy.collidesWith(this.player)) {
+      if (enemy.collidesWith(this.player) && !this.gameOver) {
         this.gameOver = true;
+
+        // Optional: you can still spawn a player-specific explosion
+        // let explosion = new Explosion(this.player.x, this.player.y, this.player.width, this.player.height);
+
         this.menu.show();
         break;
       }
+    }
+
+    // Update background explosion
+    this.backgroundExplosion.update(delta);
+    if (this.backgroundExplosion.done) {
+      // Reset for continuous play
+      this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
     }
   }
 
   render() {
     this.ctx.clearRect(0, 0, this.width, this.height);
 
+    // Background explosion BELOW everything else
+    this.backgroundExplosion.render(this.ctx);
+
+    // Draw lanes, player, enemies
     this.drawLaneDividers();
     this.player.render(this.ctx);
     this.enemies.forEach(e => e.render(this.ctx));
+
+    // Score on top of everything else
     this.score.render(this.ctx);
   }
 
