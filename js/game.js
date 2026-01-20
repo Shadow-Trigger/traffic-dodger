@@ -11,21 +11,22 @@ export class Game {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
+
     this.laneDashOffset = 0;
     this.laneScrollSpeed = 0.25;
 
     this.lanes = new LaneManager(7, width);
-
     this.gameStarting = false;
 
-    // -----------------------------
     // Menu system
-    // -----------------------------
     this.menu = new Menu(ctx.canvas.parentElement.id, (selectedSkin) => this.startFromMenu(selectedSkin));
     this.menu.show();
 
-    // Explosion for background (continuous)
+    // Continuous background explosion (behind everything except menu)
     this.backgroundExplosion = new Explosion(width / 2, height / 2, width, height);
+
+    // Player-specific explosion (spawned on crash)
+    this.playerExplosion = null;
   }
 
   startFromMenu(selectedSkin) {
@@ -43,6 +44,12 @@ export class Game {
     this.difficulty.time = 0;
     this.laneDashOffset = 0;
     this.gameOver = false;
+
+    // Reset player explosion
+    this.playerExplosion = null;
+
+    // Reset background explosion
+    this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
   }
 
   start() {
@@ -86,34 +93,50 @@ export class Game {
       if (enemy.collidesWith(this.player) && !this.gameOver) {
         this.gameOver = true;
 
-        // Optional: you can still spawn a player-specific explosion
-        // let explosion = new Explosion(this.player.x, this.player.y, this.player.width, this.player.height);
+        // Spawn explosion on top of player + everything else
+        this.playerExplosion = new Explosion(
+          this.player.x,
+          this.player.y,
+          this.player.width,
+          this.player.height
+        );
 
         this.menu.show();
         break;
       }
     }
 
-    // Update background explosion
+    // Update explosions
     this.backgroundExplosion.update(delta);
     if (this.backgroundExplosion.done) {
-      // Reset for continuous play
       this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
+    }
+
+    if (this.playerExplosion) {
+      this.playerExplosion.update(delta);
+      if (this.playerExplosion.done) {
+        this.playerExplosion = null;
+      }
     }
   }
 
   render() {
     this.ctx.clearRect(0, 0, this.width, this.height);
 
-    // Background explosion BELOW everything else
+    // Background explosion behind everything
     this.backgroundExplosion.render(this.ctx);
 
-    // Draw lanes, player, enemies
+    // Lanes, player, enemies
     this.drawLaneDividers();
     this.player.render(this.ctx);
     this.enemies.forEach(e => e.render(this.ctx));
 
-    // Score on top of everything else
+    // Player explosion on top
+    if (this.playerExplosion) {
+      this.playerExplosion.render(this.ctx);
+    }
+
+    // Score always on top
     this.score.render(this.ctx);
   }
 
