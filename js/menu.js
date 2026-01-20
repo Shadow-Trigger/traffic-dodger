@@ -12,7 +12,10 @@ export class Menu {
       "assets/player2.png",
       "assets/player3.png",
       "assets/player4.png",
-      "assets/player5.png"
+      "assets/player5.png",
+      "assets/player6.png",
+      "assets/player7.png",
+      "assets/player8.png"
       // Add more skins later
     ];
     this.currentSkinIndex = 0;
