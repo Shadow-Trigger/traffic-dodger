@@ -103,8 +103,8 @@ export class Game {
         this.playerExplosion = new Explosion(
           this.player.x,
           this.player.y,
-          this.player.width,
-          this.player.height
+          this.player.width * 2,
+          this.player.height * 2
         );
 
         // this.menu.show();
