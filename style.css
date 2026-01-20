@@ -1,21 +1,24 @@
-/* RESET */
+/* Basic reset */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-/* PAGE */
+/* Body styling */
 body {
-  background: #111;
-  color: white;
+  background-color: #111;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-family: Arial, sans-serif;
+  color: white;
 }
 
-/* CANVAS */
+/* Canvas styling */
 #gameCanvas {
-  background: #222;
-  display:
+  background-color: #222;
+  display: block;
+  border: 2px solid #555;
+}
