@@ -158,7 +158,7 @@ export class Menu {
     // Trigger sliding animation
     requestAnimationFrame(() => {
       this.animating = true;
-      this.currentSkinImg.style.transform = `translateX(${-direction * 100}%)`;
+      this.currentSkinImg.style.transform = `translateX(${-direction * 150}%)`;
       this.nextSkinImg.style.transform = "translateX(0%)";
 
       setTimeout(() => {
