@@ -2,43 +2,67 @@ export class Player {
   constructor(lanes, canvasHeight, skinPath) {
     this.lanes = lanes;
 
-    // Sliding lane logic
-    this.laneIndex = 3;
+    // Lane logic
+    this.laneIndex = Math.floor(lanes.count / 2);
     this.x = this.lanes.getLaneX(this.laneIndex);
     this.targetX = this.x;
     this.moveSpeed = 0.6;
 
-    // Player sprite size (scaled from your original)
+    // Sprite size
     this.width = 50 * 0.75;
     this.height = 106 * 0.75;
-    this.y = canvasHeight - this.height - 10; // small bottom margin
+    this.y = canvasHeight - this.height - 10;
 
-    // Load the sprite
+    // Load sprite
     this.sprite = new Image();
-    this.sprite.src = skinPath || "assets/player.png"; // default skin
+    this.sprite.src = skinPath || "assets/player.png";
     this.spriteLoaded = false;
     this.sprite.onload = () => {
       this.spriteLoaded = true;
     };
 
-    // Keyboard input for lane movement
-    window.addEventListener("keydown", e => {
-      if (e.key === "ArrowLeft" && this.laneIndex > 0) {
-        this.laneIndex--;
-        this.targetX = this.lanes.getLaneX(this.laneIndex);
-      }
-      if (e.key === "ArrowRight" && this.laneIndex < this.lanes.count - 1) {
-        this.laneIndex++;
-        this.targetX = this.lanes.getLaneX(this.laneIndex);
-      }
-    });
+    // Bind keyboard once
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    window.addEventListener("keydown", this.handleKeyDown);
   }
+
+  /* -----------------------------
+     INPUT
+  ----------------------------- */
+
+  handleKeyDown(e) {
+    if (e.key === "ArrowLeft") {
+      this.moveLeft();
+    }
+
+    if (e.key === "ArrowRight") {
+      this.moveRight();
+    }
+  }
+
+  moveLeft() {
+    if (this.laneIndex > 0) {
+      this.laneIndex--;
+      this.targetX = this.lanes.getLaneX(this.laneIndex);
+    }
+  }
+
+  moveRight() {
+    if (this.laneIndex < this.lanes.count - 1) {
+      this.laneIndex++;
+      this.targetX = this.lanes.getLaneX(this.laneIndex);
+    }
+  }
+
+  /* -----------------------------
+     UPDATE / RENDER
+  ----------------------------- */
 
   update() {
     const dx = this.targetX - this.x;
     this.x += dx * this.moveSpeed;
 
-    // snap when very close (prevents jitter)
+    // Snap to avoid jitter
     if (Math.abs(dx) < 0.1) {
       this.x = this.targetX;
     }
@@ -54,7 +78,6 @@ export class Player {
         this.height
       );
     } else {
-      // fallback green square
       ctx.fillStyle = "green";
       ctx.fillRect(
         this.x - this.width / 2,
@@ -65,7 +88,10 @@ export class Player {
     }
   }
 
-  // Optional helper for collisions
+  /* -----------------------------
+     COLLISION
+  ----------------------------- */
+
   getBounds() {
     return {
       left: this.x - this.width / 2,
@@ -73,5 +99,13 @@ export class Player {
       top: this.y - this.height / 2,
       bottom: this.y + this.height / 2,
     };
+  }
+
+  /* -----------------------------
+     CLEANUP (optional but good)
+  ----------------------------- */
+
+  destroy() {
+    window.removeEventListener("keydown", this.handleKeyDown);
   }
 }
