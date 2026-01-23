@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>Pixel Racer</title>
   <link rel="stylesheet" href="style.css">
+
   <style>
-    /* Optional extra styles to center canvas in the page */
     body {
       margin: 0;
       display: flex;
@@ -17,6 +17,7 @@
 
     #game-container {
       position: relative;
+      width: 400px; /* match canvas width */
     }
 
     canvas {
@@ -24,11 +25,50 @@
       background-color: #222;
       border: 2px solid #555;
     }
+
+    /* Mobile controls for all those babies without keyboards T-T */
+
+    #mobile-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    #mobile-controls button {
+      width: 80px;
+      height: 80px;
+
+      background: black;
+      color: white;
+
+      border: 3px solid white;
+      font-size: 32px;
+      font-family: monospace;
+
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #mobile-controls button:active {
+      background: #111;
+    }
   </style>
 </head>
+
 <body>
   <div id="game-container">
     <canvas id="game-canvas" width="400" height="600"></canvas>
+
+    <!-- Mobile buttons -->
+    <div id="mobile-controls">
+      <button id="btn-left" aria-label="Move left">◀</button>
+      <button id="btn-right" aria-label="Move right">▶</button>
+    </div>
   </div>
 
   <script type="module">
