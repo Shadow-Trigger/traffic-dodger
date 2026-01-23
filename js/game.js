@@ -22,11 +22,11 @@ export class Game {
     this.menu = new Menu(ctx.canvas.parentElement.id, (selectedSkin) => this.startFromMenu(selectedSkin));
     this.menu.show();
 
-    // Continuous background explosion (behind everything except menu)
-    // this.backgroundExplosion = new Explosion(width / 2, height / 2, width, height);
-
     // Player-specific explosion (spawned on crash)
     this.playerExplosion = null;
+
+    // Setup mobile buttons
+    this.setupMobileControls();
   }
 
   startFromMenu(selectedSkin) {
@@ -47,11 +47,29 @@ export class Game {
 
     // Reset player explosion
     this.playerExplosion = null;
-
-    // Reset background explosion
-    // this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
   }
 
+  /* -----------------------------
+     MOBILE BUTTONS
+  ----------------------------- */
+  setupMobileControls() {
+    const leftBtn = document.getElementById("btn-left");
+    const rightBtn = document.getElementById("btn-right");
+
+    if (!leftBtn || !rightBtn) return;
+
+    leftBtn.addEventListener("pointerdown", () => {
+      if (!this.gameOver && this.player) this.player.moveLeft();
+    });
+
+    rightBtn.addEventListener("pointerdown", () => {
+      if (!this.gameOver && this.player) this.player.moveRight();
+    });
+  }
+
+  /* -----------------------------
+     GAME LOOP
+  ----------------------------- */
   start() {
     this.gameStarting = true;
     requestAnimationFrame(this.loop.bind(this));
@@ -59,9 +77,7 @@ export class Game {
 
   loop(timestamp) {
     if (this.gameOver) {
-      //render the last frame (eg, for explosion)
-      console.log("Game Over - rendering last frame");
-      this.render();
+      this.render(); // render last frame (explosion, score, menu)
       return;
     }
 
@@ -96,7 +112,6 @@ export class Game {
     // Collision
     for (const enemy of this.enemies) {
       if (enemy.collidesWith(this.player) && !this.gameOver) {
-        console.log("Collision - Game Over");
         this.gameOver = true;
 
         // Spawn explosion on top of player + everything else
@@ -112,25 +127,17 @@ export class Game {
       }
     }
 
-    // Update explosions
-    // this.backgroundExplosion.update(delta);
-    // if (this.backgroundExplosion.done) {
-    //   this.backgroundExplosion = new Explosion(this.width / 2, this.height / 2, this.width, this.height);
-    // }
-
-    // if (this.playerExplosion) {
-    //   this.playerExplosion.update(delta);
-    //   if (this.playerExplosion.done) {
-    //     this.playerExplosion = null;
-    //   }
-    // }
+    // Update explosion if active
+    if (this.playerExplosion) {
+      this.playerExplosion.update(delta);
+      if (this.playerExplosion.done) {
+        this.playerExplosion = null;
+      }
+    }
   }
 
   render() {
     this.ctx.clearRect(0, 0, this.width, this.height);
-
-    // // Background explosion behind everything
-    // this.backgroundExplosion.render(this.ctx);
 
     // Lanes, player, enemies
     this.drawLaneDividers();
@@ -138,9 +145,7 @@ export class Game {
     this.enemies.forEach(e => e.render(this.ctx));
 
     // Player explosion on top
-    console.log("Considering player explosion render...");
     if (this.playerExplosion) {
-      console.log("Rendering");
       this.playerExplosion.render(this.ctx);
     }
 
