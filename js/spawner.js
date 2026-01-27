@@ -5,7 +5,7 @@ export class Spawner {
     this.lanes = lanes;
     this.difficulty = difficulty;
     this.timer = 0;
-    this.baseSpawnRate = 1000;
+    this.baseSpawnRate = 1200;
   }
 
   update(delta, enemies, score) {
